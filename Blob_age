@@ -1,0 +1,24 @@
+# https://docs.microsoft.com/es-es/azure/storage/blobs/storage-lifecycle-management-concepts#rule-filters
+{
+  "rules": [
+    {
+      "name": "AiginVision",
+      "enabled": true,
+      "type": "Lifecycle",
+      "definition": {
+        "filters": {
+          "blobTypes": [ "blockBlob" ]
+        },
+        "actions": {
+          "baseBlob": {
+            "tierToArchive": { "daysAfterModificationGreaterThan": 10 },
+            "delete": { "daysAfterModificationGreaterThan": 1000 }
+          },
+          "snapshot": {
+            "delete": { "daysAfterCreationGreaterThan": 90 }
+          }
+        }
+      }
+    }
+  ]
+}
