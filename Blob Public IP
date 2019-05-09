@@ -1,0 +1,5 @@
+#identify the IP address of the blob service endpoint of the Azure Storage account
+
+[System.Net.Dns]::GetHostAddresses($(Get-AzStorageAccount -ResourceGroupName 'RESOURCE_GROUP_NAME_HERE')[4].StorageAccountName + '.blob.core.windows.net').IPAddressToString
+
+#Notice a single RESOURCE_GROUP can have multiple STORAGE ACCOUNTS so here: 'RESOURCE_GROUP_NAME_HERE')[NUMBER]    number goes from 0 to n
