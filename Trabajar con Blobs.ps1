@@ -1,4 +1,4 @@
-﻿<#
+<#
 Pre-reqs:
     The 'AzureRM' PowerShell module
     Install-Module AzureRM
@@ -7,14 +7,14 @@ Pre-reqs:
 
 
 # Conect Azure
-Connect-AzureRmAccount
+    Connect-AzureRmAccount
 
 
 
 #Variables
-$contenedor = "lvl48xvision"
-$resource_group = "VISION_LVL01"
-$StorageAccount = Get-AzureRmStorageAccount -Name $contenedor -ResourceGroupName $resource_group
+    $contenedor = "lvl48xvision"
+    $resource_group = "VISION_LVL01"
+    $StorageAccount = Get-AzureRmStorageAccount -Name $contenedor -ResourceGroupName $resource_group
 
 
 
@@ -26,7 +26,23 @@ $StorageAccount = Get-AzureRmStorageAccount -Name $contenedor -ResourceGroupName
 
     #listar todos los blobs de un producto (mismo código)
     $lista_blobs_proyecto=Get-AzureStorageBlob -Container $contenedor -Blob 000/012/*0000125354.jpg -Context $StorageAccount.Context
-#endregion
+
+
+
+
+# CAMBIAR TIER
+    
+    #desarchivar un blob
+    $blob_desarchivar = Get-AzureStorageBlob -Container $contenedor -Blob 000/012/A1C0000120000.jpg -Context $StorageAccount.Context
+    $blob_desarchivar.ICloudBlob.SetStandardBlobTier("Cool")
+
+    #desarchivar varios blob
+    $blobs_desarchivar = Get-AzureStorageBlob -Container $contenedor -Blob 000/012/*0000120000.jpg -Context $StorageAccount.Context
+    $blobs_desarchivar.ICloudBlob.SetStandardBlobTier("Cool")
+
+    #archivar un blob
+    $blob_a_enfriar=Get-AzureStorageBlob -Container $contenedor -Blob 000/012/A1C0000120000.jpg -Context $StorageAccount.Context
+    $blob_a_enfriar.ICloudBlob.SetStandardBlobTier("Archive")
 
 
 
@@ -39,7 +55,6 @@ $StorageAccount = Get-AzureRmStorageAccount -Name $contenedor -ResourceGroupName
     $lista_blobs_proyecto | %{
         Get-AzureStorageBlobContent -Container $contenedor -Blob $_.Name -Destination "C:\blobs_recuperados\" -Context $StorageAccount.Context
     }
-#endregion
 
 
 
@@ -50,7 +65,6 @@ $StorageAccount = Get-AzureRmStorageAccount -Name $contenedor -ResourceGroupName
 
     Get-AzureStorageBlob -Container "docs" -Blob * -Context $StorageAccount.Context | Remove-AzureStorageBlob
 
-#endregion
 
 
 
@@ -60,8 +74,6 @@ $StorageAccount = Get-AzureRmStorageAccount -Name $contenedor -ResourceGroupName
     Set-AzureStorageBlobContent -Container "docs" -Blob DS-Ipswitch-Analytics.pdf -File C:\Blobs\DS-Ipswitch-Analytics.pdf -Context $StorageAccount.Context 
 
     Get-ChildItem C:\Blobs | Set-AzureStorageBlobContent -Container "docs" -Context $StorageAccount.Context -Force
-
-#endregion
 
 
 
@@ -76,8 +88,6 @@ $StorageAccount = Get-AzureRmStorageAccount -Name $contenedor -ResourceGroupName
 
     Get-AzureStorageBlobCopyState -Blob "Windows10_x64.iso" -Container "iso02" -Context $StorageAccount.Context
 
-#endregion
-
 
 
 
@@ -88,8 +98,6 @@ $StorageAccount = Get-AzureRmStorageAccount -Name $contenedor -ResourceGroupName
     Start-AzureStorageBlobCopy -SrcContainer iso -SrcBlob Windows10_x64.iso  -DestContainer iso -DestBlob Windows10_x64_002.iso  -Context $StorageAccount.Context
 
     Remove-AzureStorageBlob -Container "iso" -Blob "Windows10_x64.iso" -Context $StorageAccount.Context
-
-#endregion
 
 
 
@@ -102,8 +110,6 @@ $StorageAccount = Get-AzureRmStorageAccount -Name $contenedor -ResourceGroupName
 
     $snapshots = Get-AzureStorageBlob -Container docs -prefix Readme.txt -Context $StorageAccount.Context | Where-Object {$_.ICloudBlob.IsSnapshot -and $_.SnapshotTime -ne $null}
 
-#endregion
-
 
 
 
@@ -115,8 +121,6 @@ $StorageAccount = Get-AzureRmStorageAccount -Name $contenedor -ResourceGroupName
 
     $snapshots | Out-GridView -PassThru | Start-AzureStorageBlobCopy -DestContainer docs -Force
 
-#endregion
-
 
 
 
@@ -125,5 +129,3 @@ $StorageAccount = Get-AzureRmStorageAccount -Name $contenedor -ResourceGroupName
     $snapshots = Get-AzureStorageBlob -Container docs -Context $StorageAccount.Context | Where-Object {$_.ICloudBlob.IsSnapshot -and $_.SnapshotTime -ne $null}
 
     $snapshots | Remove-AzureStorageBlob
-
-#endregion
