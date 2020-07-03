@@ -61,9 +61,9 @@ Pre-reqs:
 
 # DELETE a blob
 
-    Remove-AzureStorageBlob -Container "docs" -Blob "DS-Ipswitch-Analytics.pdf" -Context $StorageAccount.Context
+    Remove-AzureStorageBlob -Container $contenedor -Blob "archivo_a_borrar.pdf" -Context $StorageAccount.Context
 
-    Get-AzureStorageBlob -Container "docs" -Blob * -Context $StorageAccount.Context | Remove-AzureStorageBlob
+    Get-AzureStorageBlob -Container $contenedor -Blob * -Context $StorageAccount.Context | Remove-AzureStorageBlob
 
 
 
@@ -71,9 +71,9 @@ Pre-reqs:
 
 # UPLOAD blobs
 
-    Set-AzureStorageBlobContent -Container "docs" -Blob DS-Ipswitch-Analytics.pdf -File C:\Blobs\DS-Ipswitch-Analytics.pdf -Context $StorageAccount.Context 
+    Set-AzureStorageBlobContent -Container $contenedor -Blob archivo_a_subir.pdf -File C:\Blobs\archivo_a_subir.pdf -Context $StorageAccount.Context 
 
-    Get-ChildItem C:\Blobs | Set-AzureStorageBlobContent -Container "docs" -Context $StorageAccount.Context -Force
+    Get-ChildItem C:\Blobs | Set-AzureStorageBlobContent -Container $contenedor -Context $StorageAccount.Context -Force
 
 
 
@@ -95,7 +95,7 @@ Pre-reqs:
 
     Get-AzureStorageBlob -Container "iso" -Blob * -Context $StorageAccount.Context
 
-    Start-AzureStorageBlobCopy -SrcContainer iso -SrcBlob Windows10_x64.iso  -DestContainer iso -DestBlob Windows10_x64_002.iso  -Context $StorageAccount.Context
+    Start-AzureStorageBlobCopy -SrcContainer iso -SrcBlob Windows10_x64.iso  -DestContainer iso -DestBlob Windows10_x64_NUEVO.iso  -Context $StorageAccount.Context
 
     Remove-AzureStorageBlob -Container "iso" -Blob "Windows10_x64.iso" -Context $StorageAccount.Context
 
@@ -104,20 +104,20 @@ Pre-reqs:
 
 # MAKE SNAPSHOT of a blob
 
-    $ReadmeBlob = Get-AzureStorageBlob -Container docs -Blob Readme.txt -Context $StorageAccount.Context
+    $ReadmeBlob = Get-AzureStorageBlob -Container $contenedor -Blob archivo.txt -Context $StorageAccount.Context
 
     $ReadmeBlob.ICloudBlob.CreateSnapshot()
 
-    $snapshots = Get-AzureStorageBlob -Container docs -prefix Readme.txt -Context $StorageAccount.Context | Where-Object {$_.ICloudBlob.IsSnapshot -and $_.SnapshotTime -ne $null}
+    $snapshots = Get-AzureStorageBlob -Container $contenedor -prefix archivo.txt -Context $StorageAccount.Context | Where-Object {$_.ICloudBlob.IsSnapshot -and $_.SnapshotTime -ne $null}
 
 
 
 
 # RESTORE SNAPSHOT a snapshot
 
-    Get-AzureStorageBlob -Container docs -Blob Readme.txt -Context $StorageAccount.Context
+    Get-AzureStorageBlob -Container docs -Blob archivo.txt -Context $StorageAccount.Context
 
-    $snapshots = Get-AzureStorageBlob -Container docs -prefix Readme.txt -Context $StorageAccount.Context | Where-Object {$_.ICloudBlob.IsSnapshot -and $_.SnapshotTime -ne $null}
+    $snapshots = Get-AzureStorageBlob -Container docs -prefix archivo.txt -Context $StorageAccount.Context | Where-Object {$_.ICloudBlob.IsSnapshot -and $_.SnapshotTime -ne $null}
 
     $snapshots | Out-GridView -PassThru | Start-AzureStorageBlobCopy -DestContainer docs -Force
 
