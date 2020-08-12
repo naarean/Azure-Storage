@@ -19,19 +19,20 @@ Pre-reqs:
 
 
 # LIST
+
     Get-AzureStorageContainer -Context $StorageAccount.Context
 
     #listar un único blob
-    Get-AzureStorageBlob -Container $contenedor -Blob 000/012/A1C0000125354.jpg -Context $StorageAccount.Context
+    Get-AzureStorageBlob -Container $contenedor -Blob 000/012/A1C0000125354.jpg -Context $StorageAccount.Context | FT -AutoSize
 
-    #listar todos los blobs de un producto (mismo código)
+    #listar todos los blobs de un producto (mismo patron de nombre)
     $lista_blobs_proyecto=Get-AzureStorageBlob -Container $contenedor -Blob 000/012/*0000125354.jpg -Context $StorageAccount.Context
 
 
 
 
 # CAMBIAR TIER
-    
+
     #desarchivar un blob
     $blob_desarchivar = Get-AzureStorageBlob -Container $contenedor -Blob 000/012/A1C0000120000.jpg -Context $StorageAccount.Context
     $blob_desarchivar.ICloudBlob.SetStandardBlobTier("Cool")
