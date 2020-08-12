@@ -1,10 +1,11 @@
-#1: Desarchivar
+#1: Conectar
     Connect-AzureRmAccount
     $contenedor = "lvl48xvision"
     $resource_group = "VISION_LVL01"
     $StorageAccount = Get-AzureRmStorageAccount -Name $contenedor -ResourceGroupName $resource_group
 
 
+#2: Lista objetivo y cambiar el Tier
     #D1
     $ruta_D1 = "000/012/*C0000129485.jpg"
     Get-AzureStorageBlob -Container $contenedor -Blob $ruta_D1 -Context $StorageAccount.Context | FT -AutoSize
