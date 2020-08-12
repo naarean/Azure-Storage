@@ -40,9 +40,9 @@
     Start-Sleep -s 21600 #6h
 
 
-#3:Decargar
-    $blobs_desarchivar1 | %{ Get-AzureStorageBlobContent -Container $contenedor -Blob $_.Name -Destination "C:\blobs_recuperados\" -Context $StorageAccount.Context }
-    $blobs_desarchivar2 | %{ Get-AzureStorageBlobContent -Container $contenedor -Blob $_.Name -Destination "C:\blobs_recuperados\" -Context $StorageAccount.Context }
-    $blobs_desarchivar3 | %{ Get-AzureStorageBlobContent -Container $contenedor -Blob $_.Name -Destination "C:\blobs_recuperados\" -Context $StorageAccount.Context }
-    $blobs_desarchivar4 | %{ Get-AzureStorageBlobContent -Container $contenedor -Blob $_.Name -Destination "C:\blobs_recuperados\" -Context $StorageAccount.Context }
-    $blobs_desarchivar5 | %{ Get-AzureStorageBlobContent -Container $contenedor -Blob $_.Name -Destination "C:\blobs_recuperados\" -Context $StorageAccount.Context }
+#3:Decargar (-Force para sobreescribir el fichero si existiera)
+    $blobs_desarchivar1 | %{ Get-AzureStorageBlobContent -Container $contenedor -Blob $_.Name -Destination "C:\blobs_recuperados\" -Context $StorageAccount.Context -Force | FT -AutoSize}
+    $blobs_desarchivar2 | %{ Get-AzureStorageBlobContent -Container $contenedor -Blob $_.Name -Destination "C:\blobs_recuperados\" -Context $StorageAccount.Context -Force | FT -AutoSize}
+    $blobs_desarchivar3 | %{ Get-AzureStorageBlobContent -Container $contenedor -Blob $_.Name -Destination "C:\blobs_recuperados\" -Context $StorageAccount.Context -Force | FT -AutoSize}
+    $blobs_desarchivar4 | %{ Get-AzureStorageBlobContent -Container $contenedor -Blob $_.Name -Destination "C:\blobs_recuperados\" -Context $StorageAccount.Context -Force | FT -AutoSize}
+    $blobs_desarchivar5 | %{ Get-AzureStorageBlobContent -Container $contenedor -Blob $_.Name -Destination "C:\blobs_recuperados\" -Context $StorageAccount.Context -Force | FT -AutoSize}
